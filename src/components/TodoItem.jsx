@@ -16,14 +16,29 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, updateTodo }) {
     };
 
     const getDday = (date) => {
-        if (!date) return '';
+        if (!date) return null;
         const today = new Date();
         const target = new Date(date);
+        // 날짜 차이 계산 (시간 제외)
         const diff = differenceInCalendarDays(target, today);
 
-        if (diff === 0) return 'D-Day';
-        if (diff > 0) return `D-${diff}`;
-        return `D+${Math.abs(diff)}`;
+        let label = '';
+        let type = 'safe';
+
+        if (diff === 0) {
+            label = 'D-Day';
+            type = 'urgent';
+        } else if (diff < 0) {
+            label = `D+${Math.abs(diff)}`;
+            type = 'urgent'; // 지각도 긴급
+        } else {
+            label = `D-${diff}`;
+            if (diff <= 2) type = 'urgent';
+            else if (diff <= 6) type = 'warning';
+            else type = 'safe';
+        }
+
+        return { label, type };
     };
 
     const getPriorityLabel = (p) => {
@@ -34,7 +49,7 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, updateTodo }) {
         }
     };
 
-    const dDay = todo.date ? getDday(todo.date) : '';
+    const dDayInfo = todo.date ? getDday(todo.date) : null;
 
     if (isEditing) {
         return (
@@ -99,7 +114,11 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo, updateTodo }) {
                                 {getPriorityLabel(todo.priority)}
                             </span>
                         )}
-                        {dDay && <span className="badge dday">{dDay}</span>}
+                        {dDayInfo && (
+                            <span className={`badge dday ${dDayInfo.type}`}>
+                                {dDayInfo.label}
+                            </span>
+                        )}
                         {todo.tag && <span className="badge tag">#{todo.tag}</span>}
                     </div>
                 </div>

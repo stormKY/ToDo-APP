@@ -84,11 +84,35 @@ function App() {
     ));
   };
 
-  // Filter todos by selected date
-  const filteredTodos = todos.filter(todo => {
-    const todoDate = todo.date ? new Date(todo.date) : new Date(todo.createdAt);
-    return isSameDay(todoDate, selectedDate);
-  });
+  // Filter and sort todos
+  const filteredTodos = todos
+    .filter(todo => {
+      const todoDate = todo.date ? new Date(todo.date) : new Date(todo.createdAt);
+      if (selectedDate) {
+        return isSameDay(todoDate, selectedDate);
+      }
+      return true;
+    })
+    .sort((a, b) => {
+      // 1. 완료 여부 (미완료가 위로)
+      if (a.completed !== b.completed) {
+        return a.completed ? 1 : -1;
+      }
+
+      // 2. 둘 다 미완료인 경우: 마감일 존재 여부 (마감일 있는 것이 위로)
+      if (!a.completed) {
+        if (a.date && !b.date) return -1;
+        if (!a.date && b.date) return 1;
+
+        // 3. 둘 다 마감일이 있는 경우: 마감일 임박순 (오름차순)
+        if (a.date && b.date) {
+          return new Date(a.date) - new Date(b.date);
+        }
+      }
+
+      // 4. 그 외 (둘 다 마감일 없거나, 완료된 항목끼리): 최신순 또는 기본 유지
+      return b.id - a.id; // ID 기준 내림차순 (최신순) - ID가 createdAt 기반이 아니라면 createdAt 비교 필요
+    });
 
   return (
     <div className="app-container">
