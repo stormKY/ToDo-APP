@@ -91,6 +91,50 @@
     transform: translateY(-50%) scale(1.05);
 }
 
+/* Updated Input Styles */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.input-row {
+    display: flex;
+    gap: 8px;
+}
+
+.input-select,
+.input-text,
+.input-date {
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    outline: none;
+    transition: var(--transition);
+}
+
+.input-select:focus,
+.input-text:focus,
+.input-date:focus {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+}
+
+.input-select {
+    width: 80px;
+}
+
+.input-text {
+    flex: 1;
+}
+
+.input-date {
+    width: 130px;
+}
+
 /* Todo List */
 .todo-list {
     display: flex;
@@ -142,6 +186,47 @@
     align-items: center;
     gap: 12px;
     flex: 1;
+}
+
+.todo-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.badge {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.badge.high {
+    background: var(--danger);
+}
+
+.badge.medium {
+    background: var(--warning);
+}
+
+.badge.low {
+    background: var(--success);
+}
+
+.badge.dday {
+    background: var(--primary);
+}
+
+.badge.tag {
+    background: #64748b;
 }
 
 .checkbox {

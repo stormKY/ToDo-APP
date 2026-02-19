@@ -49,13 +49,15 @@ function App() {
     localStorage.setItem('todos', JSON.stringify(todos));
   }, [todos]);
 
-  const addTodo = (text) => {
+  const addTodo = ({ text, priority, tag, date }) => {
     const newTodo = {
       id: uuidv4(),
       text: text.trim(),
       completed: false,
       createdAt: Date.now(),
-      date: selectedDate // Add date to todo
+      date: date ? new Date(date) : selectedDate, // Use input date or fallback to selected
+      priority: priority || 'medium',
+      tag: tag || ''
     };
     setTodos([newTodo, ...todos]);
   };
@@ -90,7 +92,7 @@ function App() {
         holidays={holidays}
       />
 
-      <TodoInput addTodo={addTodo} />
+      <TodoInput addTodo={addTodo} selectedDate={selectedDate} />
       <TodoList
         todos={filteredTodos}
         toggleTodo={toggleTodo}
