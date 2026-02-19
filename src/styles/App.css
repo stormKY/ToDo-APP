@@ -348,9 +348,10 @@
     pointer-events: none;
 }
 
-.calendar-day.selected {
-    background: var(--primary);
-    color: white;
+.calendar-day.selected,
+.calendar-day.selected:hover {
+    background: var(--primary) !important;
+    color: white !important;
     box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
 }
 
