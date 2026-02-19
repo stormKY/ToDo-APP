@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { isSameDay } from 'date-fns';
+import { isAfter, isSameDay } from 'date-fns';
 import TodoInput from './components/TodoInput';
 import TodoList from './components/TodoList';
 import Calendar from './components/Calendar';
@@ -88,8 +88,34 @@ function App() {
   const filteredTodos = todos
     .filter(todo => {
       const todoDate = todo.date ? new Date(todo.date) : new Date(todo.createdAt);
+
       if (selectedDate) {
-        return isSameDay(todoDate, selectedDate);
+        const target = new Date(selectedDate);
+        target.setHours(0, 0, 0, 0);
+
+        // 1. D-Day(마감일)가 있는 경우
+        if (todo.date) {
+          const dDay = new Date(todo.date);
+          dDay.setHours(0, 0, 0, 0);
+
+          // 미완료 항목: 마감일이 아직 오지 않았거나 오늘이면 보임 (과거 날짜 선택 시에도 보여야 하는지? -> "그 전에는 할일이 보이지 않아" 해결이므로, 오늘이 마감일 전이면 보여야 함)
+          // 즉, 선택된 날짜(오늘) <= 마감일
+          if (!todo.completed) {
+            return target <= dDay;
+          }
+
+          // 완료된 항목: 해당 날짜(마감일)에만 보임 (기존 유지)
+          return target.getTime() === dDay.getTime();
+        }
+
+        // 2. 마감일이 없는 경우
+        // 미완료: 항상 보임 (매일매일 해야 할 일)
+        if (!todo.completed) return true;
+
+        // 완료: 생성일(혹은 추후 완료일)에만 보임
+        const created = new Date(todo.createdAt);
+        created.setHours(0, 0, 0, 0);
+        return target.getTime() === created.getTime();
       }
       return true;
     })

@@ -22,9 +22,31 @@ export default function Calendar({ selectedDate, setSelectedDate, todos, holiday
     const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
 
     const getTodoStatus = (date) => {
+        const target = new Date(date);
+        target.setHours(0, 0, 0, 0);
+
         const todosForDate = todos.filter(todo => {
-            const todoDate = todo.date ? new Date(todo.date) : new Date(todo.createdAt);
-            return isSameDay(todoDate, date);
+            // 1. D-Day(마감일)가 있는 경우
+            if (todo.date) {
+                const dDay = new Date(todo.date);
+                dDay.setHours(0, 0, 0, 0);
+
+                // 미완료: 오늘(date) <= 마감일 (즉, 마감일 전까지 계속 점 표시)
+                if (!todo.completed) {
+                    return target <= dDay;
+                }
+                // 완료: 마감일에만 표시 (기존 유지)
+                return target.getTime() === dDay.getTime();
+            }
+
+            // 2. 마감일 없는 경우
+            // 미완료: 매일 표시
+            if (!todo.completed) return true;
+
+            // 완료: 생성일에 표시
+            const created = new Date(todo.createdAt);
+            created.setHours(0, 0, 0, 0);
+            return target.getTime() === created.getTime();
         });
 
         if (todosForDate.length === 0) {
@@ -61,9 +83,9 @@ export default function Calendar({ selectedDate, setSelectedDate, todos, holiday
                     const isHoliday = holidays?.has(format(day, 'yyyy-MM-dd'));
 
                     return (
-                    <div
-                        key={day.toString()}
-                        className={`
+                        <div
+                            key={day.toString()}
+                            className={`
               calendar-day 
               ${!isSameMonth(day, monthStart) ? 'disabled' : ''} 
               ${isSameDay(day, selectedDate) ? 'selected' : ''}
@@ -74,10 +96,10 @@ export default function Calendar({ selectedDate, setSelectedDate, todos, holiday
               ${!isHoliday && isSunday ? 'sunday' : ''}
               ${!isHoliday && isSaturday ? 'saturday' : ''}
             `}
-                        onClick={() => setSelectedDate(day)}
-                    >
-                        <span className="day-number">{format(day, 'd')}</span>
-                    </div>
+                            onClick={() => setSelectedDate(day)}
+                        >
+                            <span className="day-number">{format(day, 'd')}</span>
+                        </div>
                     );
                 })}
             </div>
