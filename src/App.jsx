@@ -21,7 +21,7 @@ function App() {
   useEffect(() => {
     const loadHolidays = async () => {
       try {
-        const res = await fetch('/api/holidays');
+        const res = await fetch(import.meta.env.BASE_URL + 'holidays.ics');
         if (!res.ok) return;
         const text = await res.text();
         const set = new Set();
