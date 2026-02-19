@@ -444,12 +444,14 @@
 .item-actions {
     display: flex;
     gap: 4px;
-    opacity: 0;
+    opacity: 0.7;
+    /* 기본적으로 약간 흐리게 */
     transition: opacity 0.2s;
 }
 
 .todo-item:hover .item-actions {
     opacity: 1;
+    /* 호버시 선명하게 */
 }
 
 .action-btn {
