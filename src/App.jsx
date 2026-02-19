@@ -72,6 +72,18 @@ function App() {
     setTodos(todos.filter(todo => todo.id !== id));
   };
 
+  const updateTodo = (id, newText, newPriority, newTag, newDate) => {
+    setTodos(todos.map(todo =>
+      todo.id === id ? {
+        ...todo,
+        text: newText,
+        priority: newPriority,
+        tag: newTag,
+        date: newDate
+      } : todo
+    ));
+  };
+
   // Filter todos by selected date
   const filteredTodos = todos.filter(todo => {
     const todoDate = todo.date ? new Date(todo.date) : new Date(todo.createdAt);
@@ -97,6 +109,7 @@ function App() {
         todos={filteredTodos}
         toggleTodo={toggleTodo}
         deleteTodo={deleteTodo}
+        updateTodo={updateTodo}
       />
     </div>
   );

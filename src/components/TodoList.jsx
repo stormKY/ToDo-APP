@@ -1,7 +1,7 @@
 import React from 'react';
 import TodoItem from './TodoItem';
 
-export default function TodoList({ todos, toggleTodo, deleteTodo }) {
+export default function TodoList({ todos, toggleTodo, deleteTodo, updateTodo }) {
     if (todos.length === 0) {
         return (
             <div className="empty-state">
@@ -18,6 +18,7 @@ export default function TodoList({ todos, toggleTodo, deleteTodo }) {
                     todo={todo}
                     toggleTodo={toggleTodo}
                     deleteTodo={deleteTodo}
+                    updateTodo={updateTodo}
                 />
             ))}
         </div>

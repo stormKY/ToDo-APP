@@ -1,8 +1,20 @@
-import React from 'react';
-import { Trash2, Check } from 'lucide-react';
-import { differenceInCalendarDays } from 'date-fns';
+import React, { useState } from 'react';
+import { Trash2, Check, Pencil, X, Save } from 'lucide-react';
+import { differenceInCalendarDays, format } from 'date-fns';
 
-export default function TodoItem({ todo, toggleTodo, deleteTodo }) {
+export default function TodoItem({ todo, toggleTodo, deleteTodo, updateTodo }) {
+    const [isEditing, setIsEditing] = useState(false);
+    const [editText, setEditText] = useState(todo.text);
+    const [editPriority, setEditPriority] = useState(todo.priority);
+    const [editTag, setEditTag] = useState(todo.tag);
+    const [editDate, setEditDate] = useState(todo.date ? format(new Date(todo.date), 'yyyy-MM-dd') : '');
+
+    const handleUpdate = () => {
+        if (!editText.trim()) return;
+        updateTodo(todo.id, editText, editPriority, editTag, editDate ? new Date(editDate) : null);
+        setIsEditing(false);
+    };
+
     const getDday = (date) => {
         if (!date) return '';
         const today = new Date();
@@ -23,6 +35,54 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo }) {
     };
 
     const dDay = todo.date ? getDday(todo.date) : '';
+
+    if (isEditing) {
+        return (
+            <div className="todo-item editing">
+                <div className="edit-form">
+                    <input
+                        className="edit-input-text"
+                        value={editText}
+                        onChange={(e) => setEditText(e.target.value)}
+                        placeholder="할 일을 입력하세요"
+                        autoFocus
+                    />
+                    <div className="edit-options">
+                        <select
+                            className="edit-input-select"
+                            value={editPriority}
+                            onChange={(e) => setEditPriority(e.target.value)}
+                        >
+                            <option value="high">높음</option>
+                            <option value="medium">보통</option>
+                            <option value="low">낮음</option>
+                        </select>
+                        <input
+                            className="edit-input-text"
+                            value={editTag}
+                            onChange={(e) => setEditTag(e.target.value)}
+                            placeholder="태그 (선택)"
+                            style={{ width: '80px' }}
+                        />
+                        <input
+                            type="date"
+                            className="edit-input-date"
+                            value={editDate}
+                            onChange={(e) => setEditDate(e.target.value)}
+                        />
+                    </div>
+                </div>
+                <div className="edit-actions">
+                    <button onClick={handleUpdate} className="action-btn save">
+                        <Save size={18} />
+                    </button>
+                    <button onClick={() => setIsEditing(false)} className="action-btn cancel">
+                        <X size={18} />
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={`todo-item ${todo.completed ? 'completed' : ''}`}>
@@ -45,16 +105,26 @@ export default function TodoItem({ todo, toggleTodo, deleteTodo }) {
                 </div>
             </div>
 
-            <button
-                className="delete-btn"
-                onClick={(e) => {
-                    e.stopPropagation();
-                    deleteTodo(todo.id);
-                }}
-                aria-label="Delete todo"
-            >
-                <Trash2 size={18} />
-            </button>
+            <div className="item-actions">
+                <button
+                    className="action-btn edit"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setIsEditing(true);
+                    }}
+                >
+                    <Pencil size={18} />
+                </button>
+                <button
+                    className="action-btn delete"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        deleteTodo(todo.id);
+                    }}
+                >
+                    <Trash2 size={18} />
+                </button>
+            </div>
         </div>
     );
 }

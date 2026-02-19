@@ -388,3 +388,107 @@
 .calendar-day.selected.status-incomplete {
     border-color: transparent;
 }
+
+/* Edit Mode & Actions */
+.todo-item.editing {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--primary);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+    cursor: default;
+}
+
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.edit-options {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-input-text,
+.edit-input-select,
+.edit-input-date {
+    padding: 6px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.2s;
+    background: white;
+}
+
+.edit-input-text {
+    flex: 1;
+}
+
+.edit-input-text:focus,
+.edit-input-select:focus,
+.edit-input-date:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+}
+
+.edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.item-actions {
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.todo-item:hover .item-actions {
+    opacity: 1;
+}
+
+.action-btn {
+    padding: 6px;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--primary);
+    transform: scale(1.1);
+}
+
+.action-btn.delete:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+.action-btn.save {
+    background: var(--primary);
+    color: white;
+}
+
+.action-btn.save:hover {
+    background: var(--primary-hover);
+    color: white;
+}
+
+.action-btn.cancel:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text-secondary);
+}
+
+/* Remove old delete-btn style override if exists */
+.delete-btn {
+    display: none;
+}
