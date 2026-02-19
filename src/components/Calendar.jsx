@@ -31,9 +31,12 @@ export default function Calendar({ selectedDate, setSelectedDate, todos, holiday
                 const dDay = new Date(todo.date);
                 dDay.setHours(0, 0, 0, 0);
 
-                // 미완료: 오늘(date) <= 마감일 (즉, 마감일 전까지 계속 점 표시)
+                const created = new Date(todo.createdAt);
+                created.setHours(0, 0, 0, 0);
+
+                // 미완료: 생성일 <= 오늘 <= 마감일
                 if (!todo.completed) {
-                    return target <= dDay;
+                    return target >= created && target <= dDay;
                 }
                 // 완료: 마감일에만 표시 (기존 유지)
                 return target.getTime() === dDay.getTime();

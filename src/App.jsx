@@ -98,10 +98,13 @@ function App() {
           const dDay = new Date(todo.date);
           dDay.setHours(0, 0, 0, 0);
 
-          // 미완료 항목: 마감일이 아직 오지 않았거나 오늘이면 보임 (과거 날짜 선택 시에도 보여야 하는지? -> "그 전에는 할일이 보이지 않아" 해결이므로, 오늘이 마감일 전이면 보여야 함)
-          // 즉, 선택된 날짜(오늘) <= 마감일
+          // 생성일(시작일) 체크
+          const created = new Date(todo.createdAt);
+          created.setHours(0, 0, 0, 0);
+
+          // 미완료 항목: 생성일 <= 선택된 날짜 <= 마감일
           if (!todo.completed) {
-            return target <= dDay;
+            return target >= created && target <= dDay;
           }
 
           // 완료된 항목: 해당 날짜(마감일)에만 보임 (기존 유지)
