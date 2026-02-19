@@ -104,13 +104,14 @@ function App() {
         holidays={holidays}
       />
 
-      <TodoInput addTodo={addTodo} selectedDate={selectedDate} />
       <TodoList
         todos={filteredTodos}
         toggleTodo={toggleTodo}
         deleteTodo={deleteTodo}
         updateTodo={updateTodo}
       />
+
+      <TodoInput addTodo={addTodo} selectedDate={selectedDate} />
     </div>
   );
 }

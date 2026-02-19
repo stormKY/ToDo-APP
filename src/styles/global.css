@@ -29,13 +29,23 @@
 body {
   font-family: var(--font-main);
   background: var(--bg-gradient);
-  min-height: 100vh;
+  min-height: 100svh;
   color: var(--text-primary);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 24px 16px;
+  width: 100%;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
 }
 
 button {
