@@ -1,0 +1,52 @@
+:root {
+  /* Premium Glassmorphism Palette */
+  --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --danger: #ef4444;
+  --success: #10b981;
+  --warning: #f97316;
+  
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --font-main: 'Inter', sans-serif;
+  
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+input {
+  font-family: inherit;
+  border: none;
+  outline: none;
+}
